@@ -36,6 +36,7 @@ ZIP_FILE=""
 GITHUB_URL=""
 UNZIP_FIX="unzip_fix.sh"
 REQ_FIX="complete_install.sh"
+COPYCHECKER="check_file_fix.sh"
 VMIP=$(hostname -I | cut -d' ' -f1)
 
 chmod +x ${SCRIPT_DIR}/fixers/*.sh
@@ -321,7 +322,7 @@ check_prerequisites() {
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             print_info "Removing existing installation..."
             sudo systemctl stop ${USR}.service 2>/dev/null || true
-
+            sudo bash ${SCRIPT_DIR}/${COPYCHECKER} ${ZIP_FILE}
             sudo bash ${SCRIPT_DIR}/${UNZIP_FIX} --zipped-file ${ZIP_FILE} --version-info ${SELECTED_VERSION} --script-root ${SCRIPT_DIR}
         else
             print_info "Installation cancelled."
