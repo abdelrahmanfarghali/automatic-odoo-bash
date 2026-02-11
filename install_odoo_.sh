@@ -263,7 +263,7 @@ show_download_menu() {
         4)
             AUTO_DOWNLOAD=1
             print_header "Creating Directories"
-            if [[ ! $ODOO ]]; then
+            if [[ ! -d "$ODOO" ]]; then
                 sudo mkdir -p $ODOO
             fi
             sudo chown ubuntu $ODOO
@@ -320,8 +320,8 @@ check_prerequisites() {
     print_success "Sufficient disk space available"
     
     # Check for required files
-    if [ ! -f "odoo-${SELECTED_VERSION}.0.zip" ]; then
-        print_error "odoo-${SELECTED_VERSION}.0.zip not found in current directory"
+    if [ ! -f "odoo-${SELECTED_VERSION}.0.zip" && ! -d "$ODOO" ]; then
+        print_error "odoo-${SELECTED_VERSION}.0.zip nor ${ODOO} was not found in current directory"
         echo ""
         show_download_menu
     fi
@@ -417,7 +417,7 @@ update_system() {
 
 create_directories() {
     print_header "Creating Directories"
-    if [[ ! $ODOO ]]; then
+    if [[ ! -d $ODOO ]]; then
         sudo mkdir -p $ODOO
     fi
     sudo chown ubuntu $ODOO
