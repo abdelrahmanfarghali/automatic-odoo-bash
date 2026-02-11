@@ -269,6 +269,7 @@ show_download_menu() {
             sudo chown ubuntu $ODOO
             print_success "Created $ODOO"
             git clone --depth 1 ${GITHUB_URL} $ODOO
+            ;;
         *)
             print_error "Invalid option"
             show_download_menu
