@@ -260,14 +260,20 @@ show_download_menu() {
             echo ""
             ;;
         4)
-            AUTO_DOWNLOAD=1
+            AUTO_DOWNLOAD=0
             print_header "Creating Directories"
-            if [[ ! -d "$ODOO" ]]; then
+            setup_paths()
+            if [[ ! -d $ODOO ]]; then
                 sudo mkdir -p $ODOO
+                print_success "Created $ODOO"
             fi
-            sudo chown ubuntu $ODOO
-            print_success "Created $ODOO"
-            git clone --depth 1 ${GITHUB_URL} $ODOO
+            if [[ ! -d $ODOO_PATH ]]; then
+                sudo mkdir -p $ODOO_PATH
+                print_success "Created $ODOO_PATH"
+            fi
+            sudo chown ubuntu:root $ODOO
+            sudo chown $USR:root $ODOO_PATH
+            git clone --depth 1 ${GITHUB_URL} $ODOO_PATH
             ;;
         *)
             print_error "Invalid option"
