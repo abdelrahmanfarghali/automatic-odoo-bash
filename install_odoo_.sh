@@ -263,7 +263,7 @@ show_download_menu() {
             AUTO_DOWNLOAD=0
             print_header "Creating Directories"
             setup_paths
-            GITHUB_URL="https://github.com/odoo/odoo/archive/refs/heads/${SELECTED_VERSION}.0.zip"
+            CLONE_URL="https://github.com/odoo/odoo.git"
 
             if [[ ! -d "$ODOO" ]]; then
                 sudo mkdir -p $ODOO
@@ -277,7 +277,7 @@ show_download_menu() {
             sudo chown ubuntu:root $ODOO
             sudo chown $USR:root $ODOO_PATH
 
-            git clone --depth 1 ${GITHUB_URL} $ODOO_PATH
+            sudo git clone --branch ${SELECTED_VERSION}.0 --depth 1 ${CLONE_URL} $ODOO_PATH
             ;;
         *)
             print_error "Invalid option"
