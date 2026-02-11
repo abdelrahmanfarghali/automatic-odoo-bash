@@ -34,7 +34,7 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 ZIP_FILE=""
 GITHUB_URL=""
 UNZIP_FIX="unzip_fix.sh"
-REQ_FIX="complete_install.sh"
+REQ_FIX="fix_requirements.sh"
 COPYCHECKER="check_file_fix.sh"
 VMIP=$(hostname -I | cut -d' ' -f1)
 
@@ -533,7 +533,8 @@ install_odoo_dependencies() {
     print_header "Installing Odoo Python Dependencies"
 
     cd $ODOO_PATH || exit 1
-    sudo bash ${SCRIPT_DIR}/fixers/${REQ_FIX} --path ${ODOO_PATH}
+    sudo bash ${SCRIPT_DIR}/fixers/${REQ_FIX} --input ${ODOO_PATH}/requirements.txt --output requirement_arch.txt --arch ${ARCH:-auto}
+    
     if [ $? -eq 0 ]; then
         print_success "Odoo requirements installed"
     else
