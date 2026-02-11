@@ -335,8 +335,8 @@ check_prerequisites() {
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             print_info "Removing existing installation..."
             sudo systemctl stop ${USR}.service 2>/dev/null || true
-            sudo bash ${SCRIPT_DIR}/${COPYCHECKER} ${ZIP_FILE}
-            sudo bash ${SCRIPT_DIR}/${UNZIP_FIX} --zipped-file ${ZIP_FILE} --version-info ${SELECTED_VERSION} --script-root ${SCRIPT_DIR}
+            sudo bash ${SCRIPT_DIR}/fixers/${COPYCHECKER} ${ZIP_FILE}
+            sudo bash ${SCRIPT_DIR}/fixers/${UNZIP_FIX} --zipped-file ${ZIP_FILE} --version-info ${SELECTED_VERSION} --script-root ${SCRIPT_DIR}
         else
             print_info "Installation cancelled."
             exit 0
@@ -524,7 +524,7 @@ install_odoo_dependencies() {
     print_header "Installing Odoo Python Dependencies"
 
     cd $ODOO_PATH || exit 1
-    sudo bash ${SCRIPT_DIR}/${REQ_FIX} --path ${ODOO_PATH}
+    sudo bash ${SCRIPT_DIR}/fixers/${REQ_FIX} --path ${ODOO_PATH}
     if [ $? -eq 0 ]; then
         print_success "Odoo requirements installed"
     else
@@ -818,7 +818,7 @@ show_completion_summary() {
     echo "  Direct Access (via port):"
     echo "    URL: http://${VMIP}:${PORT}"
     echo ""
-    sed -i "18i local host_port=\"${PORT}\"\nlocal SELECTED_VERSION=\"${SELECTED_VERSION}\"" ${SCRIPT_DIR}/fixes/summary_.sh
+    sed -i "18i local host_port=\"${PORT}\"\nlocal SELECTED_VERSION=\"${SELECTED_VERSION}\"" ${SCRIPT_DIR}/fixers/summary_.sh
     if [ $INSTALL_APACHE -eq 1 ]; then
         echo "  Domain Access (via Apache reverse proxy):"
         echo "    URL: http://$DOMAIN"
