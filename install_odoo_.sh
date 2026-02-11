@@ -263,6 +263,7 @@ show_download_menu() {
             AUTO_DOWNLOAD=0
             print_header "Creating Directories"
             setup_paths
+            GITHUB_URL="https://github.com/odoo/odoo/archive/refs/heads/${SELECTED_VERSION}.0.zip"
 
             if [[ ! -d "$ODOO" ]]; then
                 sudo mkdir -p $ODOO
