@@ -192,7 +192,7 @@ show_download_menu() {
     echo "  3) I already have the ZIP file in this directory"
     echo "  4) Clone the Git repository directly to a directory"
     echo ""
-    read -p "Enter your choice [1-3]: " download_choice
+    read -p "Enter your choice [1-4]: " download_choice
 
     sudo apt update
     sudo apt install git unzip -y
