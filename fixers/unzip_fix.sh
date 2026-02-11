@@ -45,7 +45,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         *)
-            print_error "Unknown option: $1"
+            echo "Unknown option: $1"
             echo "kindly please use argument --connection-summary | -cs for your currently installed odoo version information summary"
             exit 1
             ;;
