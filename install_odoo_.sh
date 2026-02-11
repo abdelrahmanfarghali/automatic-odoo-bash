@@ -262,17 +262,20 @@ show_download_menu() {
         4)
             AUTO_DOWNLOAD=0
             print_header "Creating Directories"
-            setup_paths()
-            if [[ ! -d $ODOO ]]; then
+            setup_paths
+
+            if [[ ! -d "$ODOO" ]]; then
                 sudo mkdir -p $ODOO
                 print_success "Created $ODOO"
+                if [[ ! -d "$ODOO_PATH" ]]; then
+                    sudo mkdir -p $ODOO_PATH
+                    print_success "Created $ODOO_PATH"
+                fi
             fi
-            if [[ ! -d $ODOO_PATH ]]; then
-                sudo mkdir -p $ODOO_PATH
-                print_success "Created $ODOO_PATH"
-            fi
+            
             sudo chown ubuntu:root $ODOO
             sudo chown $USR:root $ODOO_PATH
+
             git clone --depth 1 ${GITHUB_URL} $ODOO_PATH
             ;;
         *)
@@ -325,7 +328,7 @@ check_prerequisites() {
     print_success "Sufficient disk space available"
     
     # Check for required files
-    if [ ! -f "odoo-${SELECTED_VERSION}.0.zip" && ! -d "$ODOO" ]; then
+    if [ ! -f "odoo-${SELECTED_VERSION}.0.zip" && ! -d "$ODOO" ]]; then
         print_error "odoo-${SELECTED_VERSION}.0.zip nor ${ODOO} was not found in current directory"
         echo ""
         show_download_menu
