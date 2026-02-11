@@ -191,9 +191,12 @@ show_download_menu() {
     echo "  1) Yes, download Odoo ${SELECTED_VERSION} automatically"
     echo "  2) No, I will download manually (using wget or browser)"
     echo "  3) I already have the ZIP file in this directory"
+    echo "  4) Clone the Git repository directly to a directory"
     echo ""
     read -p "Enter your choice [1-3]: " download_choice
 
+    sudo apt update
+    sudo apt install git unzip -y
     case $download_choice in
         1)
             AUTO_DOWNLOAD=1
@@ -204,15 +207,14 @@ show_download_menu() {
             ZIP_FILE="$SCRIPT_DIR/odoo-${SELECTED_VERSION}.0.zip"
             GITHUB_URL="https://github.com/odoo/odoo/archive/refs/heads/${SELECTED_VERSION}.0.zip"
             
-            sudo git clone  --depth 1 ${GITHUB_URL}
             # Download with progress and retry
-            #wget \
-            #    --show-progress \
-            #    --tries=5 \
-            #    --retry-connrefused \
-            #    --timeout=30 \
-            #    -c -O "$ZIP_FILE" \
-            #    "$GITHUB_URL"
+            wget \
+                --show-progress \
+                --tries=5 \
+                --retry-connrefused \
+                --timeout=30 \
+                -c -O "$ZIP_FILE" \
+                "$GITHUB_URL"
             if [ $? -ne 0 ]; then
                 echo -e "${RED}✗ Download failed!${NC}"
                 echo ""
@@ -258,6 +260,15 @@ show_download_menu() {
             print_info "Proceeding with assumption that odoo-${SELECTED_VERSION}.0.zip is present"
             echo ""
             ;;
+        4)
+            AUTO_DOWNLOAD=1
+            print_header "Creating Directories"
+            if [[ ! $ODOO ]]; then
+                sudo mkdir -p $ODOO
+            fi
+            sudo chown ubuntu $ODOO
+            print_success "Created $ODOO"
+            git clone --depth 1 ${GITHUB_URL} $ODOO
         *)
             print_error "Invalid option"
             show_download_menu
@@ -405,7 +416,9 @@ update_system() {
 
 create_directories() {
     print_header "Creating Directories"
-    
+    if [[ ! $ODOO ]]; then
+        sudo mkdir -p $ODOO
+    fi
     sudo chown ubuntu $ODOO
     print_success "Created $ODOO"
     
@@ -443,7 +456,7 @@ install_python_dependencies() {
         "build-essential" "libssl-dev" "libffi-dev"
         "libmysqlclient-dev" "libjpeg-dev" "libpq-dev"
         "libjpeg8-dev" "liblcms2-dev" "libblas-dev"
-        "libatlas-base-dev" "python3-cffi" "unzip"
+        "libatlas-base-dev" "python3-cffi"
     )
     
     sudo apt-get install -y "${deps[@]}"
