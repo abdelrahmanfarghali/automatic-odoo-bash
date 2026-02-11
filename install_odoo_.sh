@@ -329,7 +329,7 @@ check_prerequisites() {
     print_success "Sufficient disk space available"
     
     # Check for required files
-    if [ ! -f "odoo-${SELECTED_VERSION}.0.zip" && ! -d "$ODOO" ]]; then
+    if [[ ! -f "odoo-${SELECTED_VERSION}.0.zip" && ! -d "$ODOO" ]]; then
         print_error "odoo-${SELECTED_VERSION}.0.zip nor ${ODOO} was not found in current directory"
         echo ""
         show_download_menu
