@@ -61,7 +61,7 @@ EOF
 ################################################################################
 # MAIN INSTALLATION SCRIPT
 ################################################################################
-
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
 main() {
 
     local odoo_path=""
@@ -83,8 +83,8 @@ main() {
     
     # Step 2: Fix Odoo requirements for architecture
     print_step "Fixing Odoo requirements for detected architecture..."
-    if [[ -f "fix_odoo_requirements.sh" ]]; then
-        bash fix_odoo_requirements.sh --path "$ODOO_PATH" --arch "$ARCH" --backup || {
+    if [[ -f "${SCRIPT_DIR}/fix_odoo_requirements.sh" ]]; then
+        bash ${SCRIPT_DIR}/fix_odoo_requirements.sh --path "$ODOO_PATH" --arch "$ARCH" --backup || {
             print_error "Requirements fixing failed"
             exit 1
         }

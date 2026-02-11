@@ -5,7 +5,7 @@
 VERSION=""
 SCRIPT_DIR=""
 ZIP_FILE=""
-
+ODOO_PATH=""
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -57,9 +57,6 @@ main() {
     # Check if file exists
     if [ ! -f "$ZIP_FILE" ]; then
         echo -e "${YELLOW}⚠ File not found: $ZIP_FILE${NC}"
-        echo "Creating directory if needed..."
-        mkdir -p "$SCRIPT_DIR"
-        echo -e "${GREEN}✓ Directory ready${NC}"
     fi
 
     # Verify file
@@ -77,13 +74,11 @@ main() {
         
         # Create the specific directory and unzip directly into it
         sudo mkdir -p "/opt/odoo$VERSION"
-        sudo unzip -o "$ZIP_FILE" -d "/opt/odoo$VERSION"
+        sudo unzip -o "$ZIP_FILE" -d "/opt/odoo$VERSION/"
         
         echo -e "${GREEN}✓ Extraction successful${NC}"
         echo -e "${BLUE}Running installer...${NC}"
 
-        # Proceed with the installation script
-        cd "$SCRIPT_DIR"
         exit 0
     else
         echo -e "${RED}✗ ZIP file is still corrupted${NC}"
